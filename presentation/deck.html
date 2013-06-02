@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=1920, user-scalable=no">
+
+	<title>Restless Aliens</title>
+	
+	<!-- Required stylesheet -->
+	<link rel="stylesheet" href="core/deck.core.css">
+	
+	<!-- Extension CSS files go here. Remove or add as needed. -->
+	<link rel="stylesheet" href="extensions/goto/deck.goto.css">
+	<link rel="stylesheet" href="extensions/menu/deck.menu.css">
+	<link rel="stylesheet" href="extensions/navigation/deck.navigation.css">
+	<link rel="stylesheet" href="extensions/status/deck.status.css">
+	<link rel="stylesheet" href="extensions/hash/deck.hash.css">
+	<link rel="stylesheet" href="extensions/scale/deck.scale.css">
+
+	<!-- Style theme. More available in /themes/style/ or create your own. -->
+	<link rel="stylesheet" href="themes/style/neon.css">
+	
+	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
+	<link rel="stylesheet" href="themes/transition/fade.css">
+	
+	<!-- Required Modernizr file -->
+	<script src="modernizr.custom.js"></script>
+</head>
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+	<section class="slide" id="title-slide">
+		<h1>Restless Aliens : Testing REST APIs using Arquillian</h1>
+
+		<h6>By John D. Ament<br/>6/6/2013</h6>
+	</section>
+<section class="slide">
+	<h2>Who is John?</h2>
+	<ul>
+		<li class="slide"><h3>A Software Developer @ <a href="http://www.spartasystems.com">Sparta Systems</a></h3><p>a maker of Enterprise Quality Management Systems in Hamilton, NJ</p></li>
+		<li class="slide"><h3>Commiter/PMC Member of <a href="http://deltaspike.apache.org/deltaspike">Apache DeltaSpike</a></h3><p>a suite of CDI extensions that make development easier than Spring</p></li>
+		<li class="slide"><h3>A JCP member, currently on the <a href="http://jcp.org/en/jsr/detail?id=343">JMS spec team</a></h3></li>
+		<li class="slide"><h3>A recent author <a href="http://link.packtpub.com/1kkLt7"><img src="images/ArquillianTestingGuide.jpg"/></a></h3></li>
+	</ul>
+</section>
+
+<!-- End slides. -->
+
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+	<span class="deck-status-current"></span>
+	/
+	<span class="deck-status-total"></span>
+</p>
+
+<!-- Required JS files. -->
+<script src="jquery-1.7.2.min.js"></script>
+<script src="core/deck.core.js"></script>
+
+<!-- Extension JS files. Add or remove as needed. -->
+<script src="core/deck.core.js"></script>
+<script src="extensions/hash/deck.hash.js"></script>
+<script src="extensions/menu/deck.menu.js"></script>
+<script src="extensions/goto/deck.goto.js"></script>
+<script src="extensions/status/deck.status.js"></script>
+<script src="extensions/navigation/deck.navigation.js"></script>
+<script src="extensions/scale/deck.scale.js"></script>
+
+<!-- Initialize the deck. You can put this in an external file if desired. -->
+<script>
+	$(function() {
+		$.deck('.slide');
+	});
+</script>
+</body>
+</html>
