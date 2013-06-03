@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 
 import com.tad.arquillian.rest.greeter.GreeterResource;
 import com.tad.arquillian.rest.local.LocalStorageBean;
+import com.tad.arquillian.service.greeter.GreeterService;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -27,7 +28,7 @@ public class OtherGreeterResourceTest {
 	@Deployment(testable = false)
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "arquillian-rest.war")
-                .addClasses(GreeterResource.class, LocalStorageBean.class)
+                .addClasses(GreeterResource.class, LocalStorageBean.class,GreeterService.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 

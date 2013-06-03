@@ -34,7 +34,7 @@
 		Testing REST APIs using Arquillian</h1>
 		<p>By John D. Ament<br/>6/6/2013</p>
 	</section>
-<section class="slide">
+<section class="slide" id="about-me">
 	<h2>Who is John?</h2>
 	<ul>
 		<li class="slide"><h3>A Software Developer @ <a href="http://www.spartasystems.com">Sparta Systems</a></h3><p>a maker of Enterprise Quality Management Systems in Hamilton, NJ</p></li>
@@ -43,12 +43,37 @@
 		<li class="slide"><h3>A recent author <a href="http://link.packtpub.com/1kkLt7"><img src="images/ArquillianTestingGuide.jpg"/></a></h3></li>
 	</ul>
 </section>
+<section class="slide" id="agenda">
+	<h2>What are we doing here?</h2>
+	<ul>
+		<li><h3>Find out what Arquillian is.</h3></li>
+		<li><h3>Learn a little about REST API tooling and the separation implied.</h3></li>
+		<li><h3>Learn some techniques for calling your REST APIs that were deployed using Arquillian.</h3></li>
+		<li><h3>Learn a variety of ways to test the same code, pick your style.</h3></li>
+	</ul>
+</section>
 <section class="slide">
 	<h2>In the beginning...</h2>
 	<ul>
 		<li><h3>We had simple unit tests.</h3></li>
-		<li><h3>We also manually deployed our code</h3></li>
-		<pre><img src="images/developer.png">I lose so much time deploying my changes.</pre>
+		<li><h3>We also manually deployed our code.</h3></li>
+		<blockquote><img src="images/developer.png">I lose so much time deploying my changes.</blockquote>
+	</ul>
+</section>
+<sections class="slide">
+<h2>The Aliens Landed</h2>
+	<ul>
+		<p><img src="images/ike.png">This is Ike.</p>
+		<li><h3>Arquillian crash landed, allowing us to deploy code to an application server.</h3></li>
+		</ul>
+	</sections>
+<section class="slide">
+	<h2>What did we do?</h2>
+	<ul>
+		<li><h3>Build the server side.</h3></li>
+		<li><h3>Build the client side.</h3></li>
+		<li><h3>Run a manual test and then try to figure out if it's the client or server.</h3></li>
+		<blockquote><img src="images/boss.png"/>Test faster.  We need quicker turn around.</blockquote>
 	</ul>
 </section>
 <section class="slide">
@@ -56,7 +81,22 @@
 	<ul>
 		<li><h3>We've all been doing REST for years, using AJAX.</h3></li>
 		<li><h3>We also manually deployed our code</h3></li>
-		<pre><img src="images/ike.png">I lose so much time deploying my changes.</pre>
+		<li><h3>REST has grown though</h3>
+			<ul>
+				<li class="slide">JSON replaced XML</li>
+				<li class="slide">The browser is more powerful</li>
+				<li class="slide">Much less server side rendering, REST provides true APIs</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+<section class="slide">
+	<h2>So how do we test it?</h2>
+	<ul>
+		<li><h3>The classic approach</h3></li>
+		<code>
+
+		</code>
 	</ul>
 </section>
 <!-- End slides. -->
@@ -67,7 +107,7 @@
 <!-- deck.status snippet -->
 <p class="deck-status">
 	<span class="deck-status-current"></span>
-	/
+	-
 	<span class="deck-status-total"></span>
 </p>
 
