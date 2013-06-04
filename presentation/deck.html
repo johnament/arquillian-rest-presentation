@@ -60,24 +60,37 @@
 		<blockquote><img src="images/developer.png">I lose so much time deploying my changes.</blockquote>
 	</ul>
 </section>
-<sections class="slide">
-<h2>The Aliens Landed</h2>
+<section class="slide">
+	<h2>Testing Goes Fun</h2>
 	<ul>
 		<p><img src="images/ike.png">This is Ike.</p>
 		<li><h3>Arquillian crash landed, allowing us to deploy code to an application server.</h3></li>
-		</ul>
-	</sections>
-<section class="slide">
-	<h2>What did we do?</h2>
-	<ul>
-		<li><h3>Build the server side.</h3></li>
-		<li><h3>Build the client side.</h3></li>
-		<li><h3>Run a manual test and then try to figure out if it's the client or server.</h3></li>
-		<blockquote><img src="images/boss.png"/>Test faster.  We need quicker turn around.</blockquote>
 	</ul>
 </section>
 <section class="slide">
-	<h2>Why REST?</h2>
+	<h2>Testing Goes Fun</h2>
+	<ul>
+		<li class="slide"><h3>Arquillian is for those cases</h3></li>
+		<li class="slide"><h3>Where you want to test your HQL.</h3></li>
+		<li class="slide"><h3>Or you want to verify that it runs in the container correctly</h3></li>
+		<li class="slide"><h3>Did I get my transaction propagation right?</h3></li>
+		<li class="slide"><h3>Does this class need to be serializable?</h3></li>
+	</ul>
+</section>
+<section class="slide">
+	<h2>Anatomy of a JAX-RS Resource</h2>
+	<pre>
+		@Path("/greet")
+		public interface GreeterResource {
+			@Produces("text/plain")
+			@GET
+			@Path("/{name}")
+			public String greet(@PathParam("name") String name);
+		}
+	</pre>
+</section>
+<section class="slide">
+	<h2>The power of REST</h2>
 	<ul>
 		<li><h3>We've all been doing REST for years, using AJAX.</h3></li>
 		<li><h3>We also manually deployed our code</h3></li>
@@ -94,9 +107,135 @@
 	<h2>So how do we test it?</h2>
 	<ul>
 		<li><h3>The classic approach</h3></li>
-		<code>
+	</ul>
+</section>
+<sections class="slide">
+	<h2>Unit Testing</h2>
+	<pre>
+	@Test
+	public void testGreeterResource() {
+		GreeterService gs = new GreeterService();
+		LocalStorageBean lsb = new LocalStorageBean();
+		lsb.init();
+		GreeterResourceImpl gr = new GreeterResourceImpl();
+		gr.setGreeterService(gs);
+		gr.setLocalStorage(lsb);
+		Assert.assertEquals("Hello, Bob!",gr.greet("Bob"));
+	}
+	</pre>
+</sections>
+<section class="slide">
+	<h2>Unit Testing Limits</h2>
+	<ul>
+		<li class="slide"><h3>We have great code coverage</h3></li>
+		<li class="slide"><h4>Great for Business Logic TDD</h4></li>
+		<li class="slide"><h5>No guarantee that this code actually deploys</h5></li>
+	</ul>
+</section>
+<section class="slide">
+	<h2>Integration Testing</h2>
+	<ul>
+		<li class="slide"><h4>Call the code through the container.</h4></li>
+		<li class="slide"><h4>Slower to execute, requires deployment.</h4></li>
+		<li class="slide"><h4>More structure</h4></li>
+	</ul>
+</section>
+<section class="slide">
+	<h2>Integration Testing</h2>
+	<pre>
+@RunWith(Arquillian.class)
+public class GreeterResourceTest {
+	@Deployment
+	public static WebArchive createDeployment() {
+	  return ShrinkWrap.create(WebArchive.class, "arquillian-rest.war")
+	  .addClasses(GreeterResource.class,LocalStorageBean.class,
+	  GreeterService.class,GreeterResourceImpl.class)
+	  .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+	}
+	@Inject
+	private GreeterResource gr;
+	@Test
+	public void testGreeting() {
+		Assert.assertEquals("Hello, Bob!",gr.greet("Bob"));
+	}
+}
+	</pre>
+</section>
+<section class="slide">
+	<h2>Integration Testing Structure</h2>
+	<ul>
+		<li class="slide"><h4><pre>@RunWith(Arquillian.class)</pre> - Enables the JUnit Runner for Arquillian.</h4></li>
+		<li class="slide"><h4><pre>@Deployment</pre> - Defines the archive that's going to be deployed.  Can be custom built or from a Maven artifact.</h4></li>
+		<li class="slide"><h4><pre>@Inject</pre> - Don't forget to inject your dependencies!</h4></li>
+		<li class="slide"><h4>Your test is deployed to the container the same as your main archive.</h4></li>
+	</ul>
+</section>
+<section class="slide">
+	<h2>(More) Functional Testing</h2>
+	<ul>
+		<li class="slide"><h3>Actively run your code the way a client would call it.</h3></li>
+		<li class="slide"><h3>Arquillian deploys your code, but doesn't deploy your test.</h3></li>
+		<li class="slide"><h3>So now your archive is just like your production archive.</h3></li>
+	</ul>
+</section>
+<section class="slide">
+	<h2>Functional Testing</h2>
+<pre>
+@RunWith(Arquillian.class)
+@RunAsClient
+public class OtherGreeterResourceTest {
+    @Deployment(testable = false)
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class, "arquillian-rest.war")
+             .addClasses(GreeterResource.class, LocalStorageBean.class,
+               GreeterService.class,GreeterResourceImpl.class)
+             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
 
-		</code>
+    @ArquillianResource
+    private URL url;
+
+    @Test
+    public void testViaHTTPGet() throws Exception {
+        final HttpClient httpclient = new DefaultHttpClient();
+        try {
+            final URL path = new URL(this.url, 
+            	"/arquillian-rest/greet/Bob");
+            final HttpGet get = new HttpGet(path.toURI());
+            final ResponseHandler<String> responseHandler = 
+            	new BasicResponseHandler();
+            final String responseBody = 
+            	httpclient.execute(get, responseHandler);
+            Assert.assertEquals("Hello, Bob!", responseBody);
+        }
+        finally {
+            httpclient.getConnectionManager().shutdown();
+        }
+    }
+}
+</pre>
+</section>
+<section class="slide">
+	<h2>More Toys!</h2>
+	<ul>
+		<li class="slide"><h4><pre>@RunAsClient</pre> - Tells Arquillian that this is a client test, not running in the application server.</h4></li>
+		<li class="slide"><h4><pre>@Deployment(tesable=false)</pre> - Tells Arquillian to not enrich your test archive.  Extensions and the Arquillian libraries will not be deployed.</h4></li>
+		<li class="slide"><h4><pre>@ArquillianResource</pre> - A custom resource that Arquillian will give you.  In this case, URL represents the deployed to URL, so your test can be dynamic.</h4></li>
+	</ul>
+</section>
+<section class="slide">
+	<h2>So what's the difference?</h2>
+	<ul>
+		<li class="slide"><h4>No extra dependencies deployed, the archive can be an exact match.</h4></li>
+		<li class="slide"><h4>Use a standard HTTP client, accessing the full REST API.</h4></li>
+		<li class="slide"><h4>It's a complete, end to end test.  There is no question, it will work.</h4></li>
+	</ul>
+</section>
+<section class="slide">
+	<h2>Wrapping it up.</h2>
+	<ul>
+		<li><h4>Arquillian allows for more thorough testing.</h4></li>
+		<li><h4>REST APIs become as easy to test as any other component.</h4></li>
 	</ul>
 </section>
 <!-- End slides. -->

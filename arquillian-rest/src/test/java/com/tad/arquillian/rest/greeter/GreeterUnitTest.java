@@ -13,7 +13,7 @@ public class GreeterUnitTest {
 		GreeterService gs = new GreeterService();
 		LocalStorageBean lsb = new LocalStorageBean();
 		lsb.init();
-		GreeterResource gr = new GreeterResource();
+		GreeterResourceImpl gr = new GreeterResourceImpl();
 		gr.setGreeterService(gs);
 		gr.setLocalStorage(lsb);
 		Assert.assertEquals("Hello, Bob!",gr.greet("Bob"));
