@@ -1,0 +1,5 @@
+<pojo-deployment class-name="com.tad.arquillian.rest.greeter.GreeterResourceImpl">
+   <properties>
+       cxf.jaxrs.providers = json
+   </properties>
+</pojo-deployment>
